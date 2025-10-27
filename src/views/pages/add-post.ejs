@@ -1,0 +1,38 @@
+<%- include('../layout', { title: 'Thêm bài viết', body: `
+    <h1>➕ Thêm bài viết mới</h1>
+    
+    <div class="card">
+        <form id="addPostForm">
+            <div class="form-group">
+                <label for="postTitle" class="form-label">Tiêu đề bài viết:</label>
+                <input type="text" id="postTitle" name="title" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="postAuthor" class="form-label">Tác giả:</label>
+                <input type="text" id="postAuthor" name="author" class="form-control" placeholder="Anonymous">
+            </div>
+            
+            <div class="form-group">
+                <label for="postContent" class="form-label">Nội dung bài viết:</label>
+                <textarea id="postContent" name="content" class="form-control" rows="10" required></textarea>
+            </div>
+            
+            <button type="submit" class="btn">Thêm bài viết</button>
+            <button type="button" class="btn btn-secondary" onclick="clearForm()">Xóa form</button>
+        </form>
+    </div>
+    
+    <div id="statusMessage" class="status" style="display: none;"></div>
+    
+    <div class="card">
+        <h3>ℹ️ Hướng dẫn</h3>
+        <ul>
+            <li>Tiêu đề và nội dung là bắt buộc</li>
+            <li>Tác giả sẽ mặc định là "Anonymous" nếu không nhập</li>
+            <li>Bài viết sẽ được lưu vào PostgreSQL database</li>
+        </ul>
+    </div>
+    
+    <a href="/posts" class="btn">Xem danh sách bài viết</a>
+` }) %>

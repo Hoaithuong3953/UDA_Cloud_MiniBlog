@@ -1,0 +1,37 @@
+<%- include('../layout', { title: 'Chỉnh sửa bài viết', body: `
+    <h1>✏️ Chỉnh sửa bài viết</h1>
+    
+    <div class="card">
+        <form id="editPostForm">
+            <input type="hidden" id="postId" value="<%= postId %>">
+            
+            <div class="form-group">
+                <label for="postTitle" class="form-label">Tiêu đề bài viết:</label>
+                <input type="text" id="postTitle" name="title" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="postAuthor" class="form-label">Tác giả:</label>
+                <input type="text" id="postAuthor" name="author" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="postContent" class="form-label">Nội dung bài viết:</label>
+                <textarea id="postContent" name="content" class="form-control" rows="10" required></textarea>
+            </div>
+            
+            <button type="submit" class="btn">Cập nhật bài viết</button>
+            <button type="button" class="btn btn-danger" onclick="deletePost()">Xóa bài viết</button>
+        </form>
+    </div>
+    
+    <div id="statusMessage" class="status" style="display: none;"></div>
+    
+    <div class="card">
+        <h3>ℹ️ Thông tin</h3>
+        <p>Đang chỉnh sửa bài viết ID: <strong><%= postId %></strong></p>
+        <p>Dữ liệu sẽ được cập nhật trong PostgreSQL database.</p>
+    </div>
+    
+    <a href="/posts" class="btn">Quay lại danh sách</a>
+` }) %>

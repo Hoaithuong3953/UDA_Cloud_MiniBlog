@@ -1,0 +1,34 @@
+<%- include('../layout', { title: 'Tìm kiếm bài viết', body: `
+    <h1>🔍 Tìm kiếm bài viết</h1>
+    
+    <div class="card">
+        <form id="searchForm">
+            <div class="form-group">
+                <label for="searchQuery" class="form-label">Từ khóa tìm kiếm:</label>
+                <input type="text" id="searchQuery" name="query" class="form-control" placeholder="Nhập từ khóa để tìm kiếm..." required>
+            </div>
+            
+            <button type="submit" class="btn">Tìm kiếm</button>
+            <button type="button" class="btn btn-secondary" onclick="clearSearch()">Xóa kết quả</button>
+        </form>
+    </div>
+    
+    <div id="searchResults" style="display: none;">
+        <h2>📋 Kết quả tìm kiếm:</h2>
+        <div id="resultsList"></div>
+    </div>
+    
+    <div id="statusMessage" class="status" style="display: none;"></div>
+    
+    <div class="card">
+        <h3>ℹ️ Hướng dẫn tìm kiếm</h3>
+        <ul>
+            <li>Tìm kiếm theo tiêu đề hoặc nội dung bài viết</li>
+            <li>Không phân biệt chữ hoa/thường</li>
+            <li>Có thể tìm kiếm một phần của từ</li>
+            <li>Kết quả được sắp xếp theo thời gian tạo mới nhất</li>
+        </ul>
+    </div>
+    
+    <a href="/posts" class="btn">Xem tất cả bài viết</a>
+` }) %>

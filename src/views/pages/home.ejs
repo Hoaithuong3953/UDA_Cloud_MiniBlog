@@ -1,0 +1,42 @@
+<%- include('../layout', { title: 'Trang chủ', body: `
+    <h1>🏠 Chào mừng đến với Post Management App!</h1>
+    
+    <div class="status">
+        <h3>✅ Ứng dụng đã sẵn sàng!</h3>
+        <p>Đây là ứng dụng quản lý bài viết với Node.js + PostgreSQL + Render.</p>
+    </div>
+    
+    <h2>🚀 Tính năng chính:</h2>
+    <div class="card">
+        <h3>📝 Quản lý bài viết</h3>
+        <ul>
+            <li>Thêm bài viết mới</li>
+            <li>Chỉnh sửa bài viết</li>
+            <li>Tìm kiếm bài viết</li>
+            <li>Xem danh sách bài viết</li>
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h3>🛠️ Công nghệ sử dụng</h3>
+        <ul>
+            <li><strong>Backend:</strong> Node.js + Express.js</li>
+            <li><strong>Database:</strong> PostgreSQL</li>
+            <li><strong>Template:</strong> EJS</li>
+            <li><strong>Deployment:</strong> Render</li>
+        </ul>
+    </div>
+    
+    <h2>🔗 Điều hướng:</h2>
+    <a href="/posts" class="btn">Xem bài viết</a>
+    <a href="/posts/add" class="btn">Thêm bài viết</a>
+    <a href="/posts/search" class="btn">Tìm kiếm</a>
+    
+    <div class="card">
+        <h3>📊 Thông tin server:</h3>
+        <p><strong>Thời gian hiện tại:</strong> ${new Date().toLocaleString('vi-VN')}</p>
+        <p><strong>Port:</strong> 3000</p>
+        <p><strong>Database:</strong> PostgreSQL</p>
+        <p><strong>Template Engine:</strong> EJS</p>
+    </div>
+` }) %>

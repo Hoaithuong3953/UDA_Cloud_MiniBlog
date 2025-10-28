@@ -1,58 +1,49 @@
-// TODO: Implement post model functions
-// This file should contain database operations for posts
+const pool = require("../db");
 
-const db = require('../db');
+exports.create = async ({ title, content, authorId }) => {
+  const query = `
+    INSERT INTO posts (title, content, author_id)
+    VALUES ($1, $2, $3)
+    RETURNING *;
+  `;
+  const values = [title, content, authorId];
+  const { rows } = await pool.query(query, values);
+  return rows[0];
+};
 
-class PostModel {
-    // TODO: Implement these database operations
-    
-    // Get all posts from database
-    static async findAll() {
-        // TODO: Implement SQL query to get all posts
-        // Example: const result = await db.query('SELECT * FROM posts ORDER BY created_at DESC');
-        // return result.rows;
-        return [];
-    }
+exports.update = async (id, { title, content }) => {
+  const query = `
+    UPDATE posts
+    SET title = COALESCE($2, title),
+        content = COALESCE($3, content),
+        updated_at = NOW()
+    WHERE id = $1
+    RETURNING *;
+  `;
+  const values = [id, title, content];
+  const { rows } = await pool.query(query, values);
+  return rows[0];
+};
 
-    // Get post by ID
-    static async findById(id) {
-        // TODO: Implement SQL query to get post by ID
-        // Example: const result = await db.query('SELECT * FROM posts WHERE id = $1', [id]);
-        // return result.rows[0];
-        return null;
-    }
+exports.getAll = async () => {
+  const { rows } = await pool.query("SELECT * FROM posts ORDER BY created_at DESC;");
+  return rows;
+};
 
-    // Create new post
-    static async create(postData) {
-        // TODO: Implement SQL query to create new post
-        // Example: const result = await db.query('INSERT INTO posts (title, content, author) VALUES ($1, $2, $3) RETURNING *', [title, content, author]);
-        // return result.rows[0];
-        return null;
-    }
+exports.search = async (q, limit = 50) => {
+  const query = `
+    SELECT * FROM posts
+    WHERE title ILIKE $1 OR content ILIKE $1
+    ORDER BY created_at DESC
+    LIMIT $2;
+  `;
+  const values = [`%${q}%`, limit];
+  const { rows } = await pool.query(query, values);
+  return rows;
+};
 
-    // Update post
-    static async update(id, updateData) {
-        // TODO: Implement SQL query to update post
-        // Example: const result = await db.query('UPDATE posts SET title = $1, content = $2 WHERE id = $3 RETURNING *', [title, content, id]);
-        // return result.rows[0];
-        return null;
-    }
-
-    // Search posts by title or content
-    static async search(query) {
-        // TODO: Implement SQL query to search posts
-        // Example: const result = await db.query('SELECT * FROM posts WHERE title ILIKE $1 OR content ILIKE $1', [`%${query}%`]);
-        // return result.rows;
-        return [];
-    }
-
-    // Delete post
-    static async delete(id) {
-        // TODO: Implement SQL query to delete post
-        // Example: const result = await db.query('DELETE FROM posts WHERE id = $1', [id]);
-        // return result.rowCount > 0;
-        return false;
-    }
-}
-
-module.exports = PostModel;
+exports.delete = async (id) => {
+  const query = `DELETE FROM posts WHERE id = $1 RETURNING *;`;
+  const { rows } = await pool.query(query, [id]);
+  return rows[0];
+};

@@ -1,47 +1,62 @@
 <%- include('../layout', { title: 'Danh sách bài viết', body: `
-    <h1>📝 Danh sách bài viết</h1>
-    
-    <div class="card">
-        <h2>📊 Thống kê</h2>
-        <p><strong>Tổng số bài viết:</strong> <span id="totalPosts">Đang tải...</span></p>
-        <p><strong>Bài viết mới nhất:</strong> <span id="latestPost">Đang tải...</span></p>
+    <div class="content"> <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h1>📝 Danh sách bài viết</h1>
+            <div>
+                <a href="/posts/add" class="btn">Thêm bài viết mới</a>
+                <a href="/posts/search" class="btn btn-secondary">Tìm kiếm bài viết</a>
+            </div>
+        </header>
+
+        <div class="card">
+            <h2>📊 Thống kê</h2>
+            <p><strong>Tổng số bài viết:</strong> <span id="totalPosts">2</span></p> <p><strong>Bài viết mới nhất:</strong> <span id="latestPost">Tiêu đề bài viết mới nhất</span></p>
+        </div>
+
+        <h2>📋 Danh sách bài viết:</h2>
+        
+        <div id="postsList">
+
+            <div class="card post-item" style="border-left: 5px solid #667eea;">
+                <h3>Tiêu đề Bài Viết Mẫu 1 (Sử dụng CSS .card)</h3>
+                <p style="color: #6c757d; margin-bottom: 10px;">
+                    <small>Tác giả: **Frontend Dev** | Ngày tạo: 27/10/2025</small>
+                </p>
+                <p>Nội dung tóm tắt: Đây là phần nội dung được cắt ngắn để hiển thị trong danh sách. Mục tiêu là kiểm tra cách các nút hành động và thông tin hiển thị với CSS của bạn.</p>
+                
+                <footer style="margin-top: 15px; text-align: right;">
+                    <a href="/posts/edit/1" class="btn" style="padding: 8px 15px;">Sửa</a>
+                    
+                    <form action="/api/posts/1?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger" style="padding: 8px 15px;" onclick="return confirm('Xóa bài viết này?')">
+                            Xóa
+                        </button>
+                    </form>
+                </footer>
+            </div>
+            
+            <div class="card post-item" style="border-left: 5px solid #764ba2;">
+                <h3>Tiêu đề Bài Viết Mẫu 2</h3>
+                <p style="color: #6c757d; margin-bottom: 10px;">
+                    <small>Tác giả: **Backend Dev** | Ngày tạo: 26/10/2025</small>
+                </p>
+                <p>Nội dung tóm tắt: Kiểm tra xem các thẻ bài viết có khoảng cách đều nhau và các nút có hoạt động không.</p>
+                
+                <footer style="margin-top: 15px; text-align: right;">
+                    <a href="/posts/edit/2" class="btn" style="padding: 8px 15px;">Sửa</a>
+                    <form action="/api/posts/2?_method=DELETE" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger" style="padding: 8px 15px;" onclick="return confirm('Xóa bài viết này?')">
+                            Xóa
+                        </button>
+                    </form>
+                </footer>
+            </div>
+
+        </div>
+        <div class="card" style="margin-top: 2rem;">
+            <h3>ℹ️ Thông tin</h3>
+            <p>Dữ liệu bài viết được lưu trữ trong PostgreSQL database.</p>
+            <p>Sử dụng API endpoints để thao tác với dữ liệu.</p>
+        </div>
+        
     </div>
-    
-    <h2>📋 Danh sách bài viết:</h2>
-    <div id="postsList">
-        <div class="spinner"></div>
-        <p>Đang tải danh sách bài viết...</p>
-    </div>
-    
-    <div class="card">
-        <h3>ℹ️ Thông tin</h3>
-        <p>Dữ liệu bài viết được lưu trữ trong PostgreSQL database.</p>
-        <p>Sử dụng API endpoints để thao tác với dữ liệu.</p>
-    </div>
-    
-    <a href="/posts/add" class="btn">Thêm bài viết mới</a>
-    <a href="/posts/search" class="btn">Tìm kiếm bài viết</a>
-` }) %>
-    <h1>📝 Danh sách bài viết</h1>
-    
-    <div class="card">
-        <h2>📊 Thống kê</h2>
-        <p><strong>Tổng số bài viết:</strong> <span id="totalPosts">Đang tải...</span></p>
-        <p><strong>Bài viết mới nhất:</strong> <span id="latestPost">Đang tải...</span></p>
-    </div>
-    
-    <h2>📋 Danh sách bài viết:</h2>
-    <div id="postsList">
-        <div class="spinner"></div>
-        <p>Đang tải danh sách bài viết...</p>
-    </div>
-    
-    <div class="card">
-        <h3>ℹ️ Thông tin</h3>
-        <p>Dữ liệu bài viết được lưu trữ trong PostgreSQL database.</p>
-        <p>Sử dụng API endpoints để thao tác với dữ liệu.</p>
-    </div>
-    
-    <a href="/posts/add" class="btn">Thêm bài viết mới</a>
-    <a href="/posts/search" class="btn">Tìm kiếm bài viết</a>
 ` }) %>

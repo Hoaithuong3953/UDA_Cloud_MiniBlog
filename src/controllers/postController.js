@@ -1,63 +1,77 @@
-// TODO: Implement post controller functions
-// This file should contain the business logic for post operations
+const { success, error } = require("../utils/response");
 
-const Post = require('../models/postModel');
+// Fake DB tạm
+let posts = [];
 
-// TODO: Implement these functions
-// - getAllPosts: Get all posts from database
-// - getPostById: Get a specific post by ID
-// - createPost: Create a new post
-// - updatePost: Update an existing post
-// - searchPosts: Search posts by title or content
-// - deletePost: Delete a post
+// ✅ Task của Print 1 - Create Post
+exports.createPost = (req, res) => {
+  const { title, content, authorId } = req.body;
+  if (!title || !content || !authorId) {
+    return error(res, "INVALID_REQUEST", "Thiếu dữ liệu", 400);
+  }
 
-// Example function structure:
-const getAllPosts = async (req, res) => {
-    try {
-        // TODO: Implement logic to get all posts
-        res.json({
-            success: true,
-            message: 'Get all posts - TODO: Implement this function'
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Error fetching posts',
-            error: error.message
-        });
-    }
+  const newPost = {
+    id: `post_${Date.now()}`,
+    title,
+    content,
+    authorId,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  posts.push(newPost);
+  return success(res, newPost, 201);
 };
 
-const getPostById = async (req, res) => {
-    // TODO: Implement get post by ID
-    res.json({ message: 'Get post by ID - TODO: Implement this function' });
+// ✅ Task của Print 1 - Update Post
+exports.updatePost = (req, res) => {
+  const { id } = req.params;
+  const post = posts.find((p) => p.id === id);
+
+  if (!post) {
+    return error(res, "NOT_FOUND", "Bài viết không tồn tại", 404);
+  }
+
+  const { title, content } = req.body;
+  post.title = title || post.title;
+  post.content = content || post.content;
+  post.updatedAt = new Date().toISOString();
+
+  return success(res, post, 200);
 };
 
-const createPost = async (req, res) => {
-    // TODO: Implement create new post
-    res.json({ message: 'Create post - TODO: Implement this function' });
+exports.getPosts = (req, res) => {
+  return success(res, posts, 200);
 };
 
-const updatePost = async (req, res) => {
-    // TODO: Implement update post
-    res.json({ message: 'Update post - TODO: Implement this function' });
+// ✅ Task của Print 2 - Search Post
+exports.searchPosts = (req, res) => {
+  const q = (req.query.q || "").trim().toLowerCase();
+  if (!q) {
+    return error(res, "INVALID_QUERY", "Thiếu từ khóa q", 400);
+  }
+
+  const results = posts
+    .filter(
+      (p) =>
+        p.title.toLowerCase().includes(q) ||
+        p.content.toLowerCase().includes(q)
+    )
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 50);
+
+  return success(res, results, 200);
 };
 
-const searchPosts = async (req, res) => {
-    // TODO: Implement search posts
-    res.json({ message: 'Search posts - TODO: Implement this function' });
-};
+// ✅ Task của Print 2 - Delete Post
+exports.deletePost = (req, res) => {
+  const { id } = req.params;
+  const index = posts.findIndex((p) => p.id === id);
 
-const deletePost = async (req, res) => {
-    // TODO: Implement delete post
-    res.json({ message: 'Delete post - TODO: Implement this function' });
-};
+  if (index === -1) {
+    return error(res, "NOT_FOUND", "Bài viết không tồn tại", 404);
+  }
 
-module.exports = {
-    getAllPosts,
-    getPostById,
-    createPost,
-    updatePost,
-    searchPosts,
-    deletePost
+  posts.splice(index, 1);
+  return success(res, { deleted: 1 }, 200);
 };

@@ -1,5 +1,5 @@
 const { success, error } = require("../utils/response");
-const Post = require("../models/Post");
+const Post = require("../models/postModel");
 
 exports.createPost = async (req, res) => {
   try {

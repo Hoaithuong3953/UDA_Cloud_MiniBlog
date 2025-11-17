@@ -1,12 +1,12 @@
 const pool = require("../db");
 
-exports.create = async ({ title, content, authorId }) => {
+exports.create = async ({ title, content, authorName }) => {
   const query = `
-    INSERT INTO posts (title, content, author_id)
+    INSERT INTO posts (title, content, author_name)
     VALUES ($1, $2, $3)
     RETURNING *;
   `;
-  const values = [title, content, authorId];
+  const values = [title, content, authorName];
   const { rows } = await pool.query(query, values);
   return rows[0];
 };

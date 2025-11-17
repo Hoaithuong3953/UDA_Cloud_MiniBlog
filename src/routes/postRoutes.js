@@ -6,7 +6,7 @@ const {
   getPosts,
   searchPosts,
   deletePost,
-} = require("../controllers/postsController");
+} = require("../controllers/postController");
 
 router.post("/", createPost);
 router.put("/:id", updatePost);

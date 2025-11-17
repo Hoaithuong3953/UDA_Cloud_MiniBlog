@@ -1,5 +1,5 @@
-/* Post Management App - Base Styles */
-/* TODO: Frontend developers should implement the complete styling */
+/* Post Management App - Final Styling for UI Demo */
+/* Styling completed as part of Task 1.8 */
 
 * {
     margin: 0;
@@ -128,6 +128,28 @@ h3 {
     margin: 1rem 0;
     box-shadow: 0 5px 15px rgba(0,0,0,0.08);
     border-left: 4px solid #667eea;
+    /* Bổ sung để đảm bảo các card có khoảng cách với nhau */
+    margin-bottom: 1.5rem;
+}
+
+/*  Bổ sung cho Trang Danh sách Bài viết (posts.ejs) */
+.post-list .card {
+    border-left: 5px solid #667eea;
+    /* Dùng Flexbox để căn chỉnh tiêu đề/tác giả nếu cần */
+}
+
+/*  Căn chỉnh nút Sửa/Xóa trong card */
+.post-actions {
+    display: flex;
+    justify-content: flex-end; /* Đẩy các nút sang bên phải */
+    align-items: center;
+    margin-top: 15px;
+}
+
+.post-actions .btn {
+    /* Giảm kích thước nút cho phù hợp hơn trong card */
+    padding: 8px 15px; 
+    margin: 0 0.25rem;
 }
 
 /* Status */
@@ -148,19 +170,19 @@ h3 {
 
 /* Forms */
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem; /* Tăng khoảng cách cho form dễ đọc hơn */
 }
 
 .form-label {
     display: block;
     margin-bottom: 0.5rem;
-    font-weight: 500;
+    font-weight: 600; /* Tăng độ đậm của label */
     color: #333;
 }
 
 .form-control {
     width: 100%;
-    padding: 0.75rem;
+    padding: 0.85rem; /* Tăng padding để trường nhập liệu lớn hơn */
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1rem;
@@ -170,7 +192,7 @@ h3 {
 .form-control:focus {
     outline: none;
     border-color: #667eea;
-    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3); /* Hiệu ứng focus nổi bật hơn */
 }
 
 /* Footer */

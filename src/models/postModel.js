@@ -30,6 +30,8 @@ exports.getAll = async () => {
   return rows;
 };
 
+
+
 exports.search = async (q, limit = 50) => {
   const query = `
     SELECT * FROM posts

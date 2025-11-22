@@ -1,0 +1,57 @@
+<%- include('layout', { 
+    title: "Danh sách bài viết",
+    body: `
+        <div class="content">
+            <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h1 style="color: #5B21B6; font-size: 2.4rem; font-weight: bold;">
+                    Danh sách bài viết
+                </h1>
+                <div>
+                    <a href="/posts/add" style="background: #7C3AED; color: white; padding: 14px 32px; border-radius: 50px; font-weight: bold; text-decoration: none;">
+                        Thêm bài viết mới
+                    </a>
+                    <a href="/posts/search" style="margin-left: 12px; background: #4B5563; color: white; padding: 14px 32px; border-radius: 50px; text-decoration: none;">
+                        Tìm kiếm
+                    </a>
+                </div>
+            </header>
+
+            <div style="display: grid; gap: 2rem; margin-top: 2rem;">
+                ${posts && posts.length > 0 
+                    ? posts.map(post => `
+                        <div style="background: white; border-radius: 24px; padding: 2rem; box-shadow: 0 12px 32px rgba(139,92,246,0.2); transition: all 0.3s;"
+                             onmouseover="this.style.transform='translateY(-8px)'"
+                             onmouseout="this.style.transform=''">
+
+                            <div style="background: linear-gradient(135deg, #8B5CF6, #6366F1); color: white; padding: 1.4rem 2rem; border-radius: 20px; margin: -2rem -2rem 1.8rem -2rem; font-size: 1.7rem; font-weight: bold;">
+                                ${post.title || 'Không có tiêu đề'}
+                            </div>
+
+                            <p style="color: #374151; margin: 1.2rem 0; line-height: 1.8;">
+                                ${post.content ? post.content.replace(/<[^>]*>/g, '').substring(0, 200) + '...' : 'Không có nội dung'}
+                            </p>
+
+                            <!-- TÁC GIẢ HIỆN ĐÚNG -->
+                            <div style="padding: 1rem 1.6rem; background: #FAF5FF; border-radius: 16px; display: inline-block; font-weight: 600; color: #6B21A8; border: 2px solid #E9D5FF;">
+                                Tác giả: <strong style="color: #5B21B6; font-size: 1.2rem;">${post.author || 'Khuyết danh'}</strong>
+                            </div>
+
+                            <small style="color: #8B5CF6; display: block; margin: 1rem 0;">
+                                ${new Date(post.created_at).toLocaleString('vi-VN')}
+                            </small>
+
+                            <div style="margin-top: 2rem; display: flex; gap: 16px; justify-content: flex-end;">
+                                <a href="/posts/editPost/${post.id}" style="background: #6B7280; color: white; padding: 12px 28px; border-radius: 50px; font-weight: bold; text-decoration: none;">Sửa</a>
+                                <a href="/posts/delete/${post.id}" onclick="return confirm('Xóa bài này?')" style="background: #EF4444; color: white; padding: 12px 28px; border-radius: 50px; font-weight: bold; text-decoration: none;">Xóa</a>
+                            </div>
+                        </div>
+                    `).join('')
+                    : `<div style="text-align: center; padding: 5rem; background: white; border-radius: 24px;">
+                         <p style="font-size: 1.6rem; color: #9CA3AF;">Chưa có bài viết nào</p>
+                         <a href="/posts/add" style="background: #7C3AED; color: white; padding: 16px 40px; border-radius: 50px; font-weight: bold; margin-top: 1rem; display: inline-block; text-decoration: none;">Viết bài đầu tiên!</a>
+                       </div>`
+                }
+            </div>
+        </div>
+    `
+}) %>

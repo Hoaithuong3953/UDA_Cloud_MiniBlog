@@ -5,12 +5,13 @@ console.log('📝 Post Management App - Frontend loaded');
 
 // API Configuration
 const API_CONFIG = {
-    baseURL: '/api',
+    baseURL: 'http://localhost:5000',
     endpoints: {
-        posts: '/api/posts',
-        health: '/api/health'
+        posts: 'http://localhost:5000/api/posts',
+        health: 'http://localhost:5000/api/health'
     }
 };
+
 
 // Utility Functions
 const utils = {
@@ -100,22 +101,39 @@ const api = {
 // Post Management Functions
 const postManager = {
     // TODO: Implement these functions
-    loadPosts: async () => {
-        try {
-            utils.showLoading();
-            const response = await api.getPosts();
-            
-            const postsList = document.getElementById('postsList');
-            if (postsList) {
-                postsList.innerHTML = '<p>Posts loaded successfully!</p>';
-            }
-            
+loadPosts: async () => {
+    try {
+        utils.showLoading();
+
+        const data = await api.getPosts();  
+        const posts = data.posts || data || [];   // tự detect format backend
+
+        const postsList = document.getElementById('postsList');
+
+        if (!postsList) return;
+
+        if (!posts.length) {
+            postsList.innerHTML = `<p>Không có bài viết nào.</p>`;
             utils.hideLoading();
-        } catch (error) {
-            utils.hideLoading();
-            utils.showStatus('Error loading posts: ' + error.message, 'error');
+            return;
         }
-    },
+
+        postsList.innerHTML = posts.map(post => `
+            <div class="post-item">
+                <h3>${post.title}</h3>
+                <p>${post.content}</p>
+                <small>Ngày tạo: ${new Date(post.created_at).toLocaleString()}</small>
+            </div>
+        `).join('');
+
+        utils.hideLoading();
+    } catch (error) {
+        utils.hideLoading();
+        utils.showStatus(`Lỗi tải bài viết: ${error.message}`, 'error');
+    }
+},
+
+
 
     addPost: async () => {
         // TODO: Implement add post functionality

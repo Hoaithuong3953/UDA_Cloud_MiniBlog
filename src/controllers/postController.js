@@ -1,76 +1,116 @@
 const { success, error } = require("../utils/response");
 const Post = require("../models/postModel");
 
-// CREATE
+// CREATE - Thêm bài viết mới
 exports.createPost = async (req, res) => {
-  try {
-    const { title, content, authorName } = req.body;
+    try {
+        const { title, content, author, authorName } = req.body;  // ← THÊM "author"
 
-    if (!title || !content || !authorName) {
-      return error(res, "INVALID_REQUEST", "Thiếu dữ liệu", 400);
+        // DÙ FORM GỬI author HOẶC authorName ĐỀU ĐƯỢC
+        const finalAuthor = author || authorName || "Khuyết danh";
+
+        if (!title || !content) {
+            return error(res, "INVALID_REQUEST", "Vui lòng nhập tiêu đề và nội dung", 400);
+        }
+
+        await Post.create({ 
+            title: title.trim(), 
+            content: content.trim(), 
+            author: finalAuthor
+        });
+
+        return res.redirect("/posts");
+    } catch (err) {
+        console.error("Lỗi tạo bài viết:", err);
+        return res.status(500).send("Lỗi server");
     }
+};
+// GET: Hiển thị form chỉnh sửa bài viết
+exports.getEditPost = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const post = await Post.getById(id);
 
-    const newPost = await Post.create({ title, content, authorName });
-    return success(res, newPost, 201);
-  } catch (err) {
-    return console.error(err);
-  }
+        if (!post) {
+            return res.status(404).send("Không tìm thấy bài viết");
+        }
+
+        res.render("editPost", { post });  // Truyền biến post vào view
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Lỗi server");
+    }
 };
 
-// UPDATE
+// UPDATE - Cập nhật bài viết
 exports.updatePost = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { title, content } = req.body;
+    try {
+        const { id } = req.params;
+        const { title, content } = req.body;
 
-    const updated = await Post.update(id, { title, content });
-    if (!updated) {
-      return error(res, "NOT_FOUND", "Bài viết không tồn tại", 404);
+        const updated = await Post.update(id, { title, content });
+        if (!updated) {
+            return res.status(404).send("Bài viết không tồn tại");
+        }
+
+        res.redirect("/posts");  // Quay lại danh sách sau khi cập nhật
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Lỗi server");
     }
-
-    return success(res, updated, 200);
-  } catch (err) {
-    return error(res, "SERVER_ERROR", err.message, 500);
-  }
 };
 
-// GET ALL
+// GET ALL - Hiển thị danh sách bài viết
 exports.getPosts = async (req, res) => {
-  try {
-    const posts = await Post.getAll();
-    return success(res, posts);
-  } catch (err) {
-    return error(res, "SERVER_ERROR", err.message, 500);
-  }
+    try {
+        const posts = await Post.getAll();
+        res.render("posts", { posts });  // Truyền danh sách bài viết
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Lỗi server");
+    }
 };
 
-// SEARCH
+// SEARCH - Tìm kiếm bài viết
 exports.searchPosts = async (req, res) => {
-  try {
-    const q = (req.query.q || "").trim();
-    if (!q) {
-      return error(res, "INVALID_QUERY", "Thiếu từ khóa q", 400);
-    }
+    try {
+        const q = (req.query.q || "").trim();
+        let results = [];
 
-    const results = await Post.search(q);
-    return success(res, results);
-  } catch (err) {
-    return error(res, "SERVER_ERROR", err.message, 500);
-  }
+        if (q) {
+            results = await Post.search(q);
+        }
+
+        return res.render("search", {
+            title: "Tìm kiếm bài viết",
+            query: q,
+            posts: results,
+            results: results
+        });
+    } catch (err) {
+        console.error(err);
+        return res.render("search", {
+            title: "Tìm kiếm bài viết",
+            query: q || "",
+            posts: [],
+            results: []
+        });
+    }
 };
 
-// DELETE
+// DELETE - Xóa bài viết
 exports.deletePost = async (req, res) => {
-  try {
-    const { id } = req.params;
+    try {
+        const { id } = req.params;
+        const deleted = await Post.delete(id);
 
-    const deleted = await Post.delete(id);
-    if (!deleted) {
-      return error(res, "NOT_FOUND", "Bài viết không tồn tại", 404);
+        if (!deleted) {
+            return error(res, "NOT_FOUND", "Bài viết không tồn tại", 404);
+        }
+
+        return res.redirect("/posts");  // Quay lại danh sách sau khi xóa
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send("Lỗi server");
     }
-
-    return success(res, { deleted: 1 }, 200);
-  } catch (err) {
-    return error(res, "SERVER_ERROR", err.message, 500);
-  }
 };

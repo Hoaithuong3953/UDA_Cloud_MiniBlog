@@ -1,27 +1,28 @@
 const pool = require("../db");
 
-exports.create = async ({ title, content, author }) => {
+exports.create = async ({ title, content, author_name }) => {
+  const finalAuthorName = author_name || "Khuyết danh";
   const query = `
-    INSERT INTO posts (title, content, author)
+    INSERT INTO posts (title, content, author_name)
     VALUES ($1, $2, $3)
     RETURNING *;
   `;
-  const values = [title, content, author];
+  const values = [title, content, finalAuthorName];
   const { rows } = await pool.query(query, values);
   return rows[0];
 };
 
-exports.update = async (id, { title, content, author }) => {
+exports.update = async (id, { title, content, author_name }) => {
   const query = `
     UPDATE posts
     SET title = COALESCE($2, title),
         content = COALESCE($3, content),
-        author = COALESCE($4, author),
+        author_name = COALESCE($4, author_name),
         updated_at = NOW()
     WHERE id = $1
     RETURNING *;
   `;
-  const values = [id, title, content, author];
+  const values = [id, title, content, author_name];
   const { rows } = await pool.query(query, values);
   return rows[0];
 };

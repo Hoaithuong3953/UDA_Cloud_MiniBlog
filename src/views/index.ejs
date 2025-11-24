@@ -1,69 +1,68 @@
 <%- include('layout', { 
     title: 'Trang chủ', 
     body: `
-        <div style="min-height: 100vh; background: linear-gradient(135deg, #6366F1, #8B5CF6); padding: 5rem 2rem; color: white; text-align: center;">
+        <section style="min-height: 50vh; padding: 5rem 2rem; color: white; text-align: center;">
             <div style="max-width: 1100px; margin: 0 auto;">
-
-                <h1 style="font-size: 4.2rem; font-weight: 900; color: white; margin-bottom: 1.5rem; text-shadow: 0 10px 30px rgba(0,0,0,0.3); line-height: 1.2;">
+                <h1 style="font-size: 4.2rem; font-weight: 900; color: white; margin-bottom: 2rem; text-shadow: 0 10px 30px rgba(0,0,0,0.3); line-height: 1.2;">
                     Chào mừng đến với<br>
-                    <span style="background: linear-gradient(90deg, #F472B6, #A78BFA, #60A5FA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 1.1em;">
+                    <span style="background: linear-gradient(90deg, #F472B6, #A78BFA, #60A5FA); background-clip: text; -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent; font-size: 1.1em;">
                         Post Management App!
                     </span>
                 </h1>
+            </div>
+        </section>
 
-                <p style="font-size: 1.5rem; color: #E0E7FF; margin: 3rem 0 5rem; opacity: 0.95;">
-                </p>
-
-                <div style="background: rgba(255,255,255,0.95); color: #1F2937; border-radius: 32px; padding: 3.5rem; box-shadow: 0 30px 80px rgba(99,86,246,.5); margin-bottom: 4rem; backdrop-filter: blur(10px);">
-                    <h2 style="font-size: 2.3rem; color: #5B21B6; margin-bottom: 2rem;">
-                        Quản lý bài viết
+        <section id="posts-list" style="margin: -4rem auto 4rem auto; max-width: 1100px; padding: 0 1.5rem;">
+            <div class="content" style="margin: 0; padding: 2.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; gap: 1rem; flex-wrap: wrap;">
+                    <h2 style="color: #5B21B6; font-size: 2.3rem; font-weight: 800; margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.75rem;">
+                        <span>Danh sách bài viết</span>
+                        <span style="font-size: 1.1rem; color: #7C3AED; font-weight: 600;">
+                            (${Array.isArray(posts) ? posts.length : 0} bài viết)
+                        </span>
                     </h2>
-                    <ul style="font-size: 1.4rem; line-height: 2.0; text-align: left; max-width: 700px; margin: 0 auto; padding-left: 2rem;">
-                        <li><strong>Thêm bài viết mới</strong> – Tạo bài viết chỉ trong vài giây</li>
-                        <li><strong>Chỉnh sửa bài viết</strong> – Cập nhật nội dung nhanh chóng</li>
-                        <li><strong>Tìm kiếm thông minh</strong> – Tìm ngay theo tiêu đề hoặc nội dung</li>
-                        <li><strong>Xem danh sách bài viết</strong> – Giao diện đẹp, dễ quản lý</li>
-                    </ul>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <a href="/posts/add" style="background: #7C3AED; color: white; padding: 12px 28px; border-radius: 40px; font-weight: bold; text-decoration: none;">
+                            + Bài viết mới
+                        </a>
+                        <a href="/posts/search" style="background: #60A5FA; color: white; padding: 12px 28px; border-radius: 40px; font-weight: bold; text-decoration: none;">
+                            🔍 Tìm kiếm
+                        </a>
+                    </div>
                 </div>
 
-                <div style="background: rgba(255,255,255,0.95); color: #1F2937; border-radius: 32px; padding: 3.5rem; box-shadow: 0 30px 80px rgba(99,86,246,.5); backdrop-filter: blur(10px);">
-                    <h2 style="font-size: 2.6rem; color: #5B21B6; margin-bottom: 2rem;">
-                        Công nghệ sử dụng
-                    </h2>
-                    <ul style="font-size: 1.4rem; line-height: 2.0; text-align: left; max-width: 700px; margin: 0 auto; padding-left: 2rem;">
-                        <li><strong>Backend:</strong> Node.js + Express.js</li>
-                        <li><strong>Database:</strong> PostgreSQL</li>
-                        <li><strong>Template Engine:</strong> EJS</li>
-                        <li><strong>Deployment:</strong> Render.com</li>
-                    </ul>
-                </div>
-
-                <div style="margin-top: 5rem; display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
-                    <a href="/posts" 
-                       style="padding: 20px 55px; background: #4F46E5; color: white; border-radius: 60px; font-weight: bold; font-size: 1.5rem; text-decoration: none; box-shadow: 0 20px 40px rgba(79,70,229,.6); transition: all 0.3s; display: inline-block;"
-                       onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 25px 50px rgba(79,70,229,.8)'"
-                       onmouseout="this.style.transform=''; this.style.boxShadow='0 20px 40px rgba(79,70,229,.6)'">
-                        Xem bài viết
-                    </a>
-                    <a href="/posts/add" 
-                       style="padding: 20px 55px; background: #7C3AED; color: white; border-radius: 60px; font-weight: bold; font-size: 1.5rem; text-decoration: none; box-shadow: 0 20px 40px rgba(124,58,237,.6); transition: all 0.3s; display: inline-block;"
-                       onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 25px 50px rgba(124,58,237,.8)'"
-                       onmouseout="this.style.transform=''; this.style.boxShadow='0 20px 40px rgba(124,58,237,.6)'">
-                        Thêm bài viết
-                    </a>
-                    <a href="/posts/search" 
-                       style="padding: 20px 55px; background: #6366F1; color: white; border-radius: 60px; font-weight: bold; font-size: 1.5rem; text-decoration: none; box-shadow: 0 20px 40px rgba(99,102,241,.6); transition: all 0.3s; display: inline-block;"
-                       onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 25px 50px rgba(99,102,241,.8)'"
-                       onmouseout="this.style.transform=''; this.style.boxShadow='0 20px 40px rgba(99,102,241,.6)'">
-                        Tìm kiếm
-                    </a>
-                </div>
-
-                <div style="margin-top: 7rem; color: #DDD6FE; font-size: 1.2rem; opacity: 0.9;">
-                    © 2025 Post Management App – Cloud Computing Final Project<br>
-                    <strong>Built with Node.js, Express.js, EJS, and PostgreSQL</strong>
+                <div style="display: grid; gap: 2rem;">
+                    ${
+                        Array.isArray(posts) && posts.length > 0 
+                        ? posts.map(post => `
+                            <article style="background: white; border-radius: 24px; padding: 2rem; box-shadow: 0 12px 32px rgba(139,92,246,0.2); transition: all 0.3s;"
+                                     onmouseover="this.style.transform='translateY(-8px)';"
+                                     onmouseout="this.style.transform='';">
+                                <div style="background: linear-gradient(135deg, #8B5CF6, #6366F1); color: white; padding: 1.4rem 2rem; border-radius: 20px; margin: -2rem -2rem 1.8rem -2rem; font-size: 1.7rem; font-weight: bold;">
+                                    ${post.title || 'Không có tiêu đề'}
+                                </div>
+                                <p style="color: #374151; margin: 1.2rem 0; line-height: 1.8;">
+                                    ${post.content ? post.content.replace(/<[^>]*>/g, '').substring(0, 220) + '...' : 'Không có nội dung'}
+                                </p>
+                                <div style="padding: 1rem 1.6rem; background: #FAF5FF; border-radius: 16px; display: inline-block; font-weight: 600; color: #6B21A8; border: 2px solid #E9D5FF;">
+                                    Tác giả: <strong style="color: #5B21B6; font-size: 1.1rem;">${post.author_name || 'Khuyết danh'}</strong>
+                                </div>
+                                <small style="color: #8B5CF6; display: block; margin: 1rem 0;">
+                                    ${post.created_at ? new Date(post.created_at).toLocaleString('vi-VN') : ''}
+                                </small>
+                                <div style="margin-top: 2rem; display: flex; gap: 14px; justify-content: flex-end;">
+                                    <a href="/posts/editPost/${post.id}" style="background: #6B7280; color: white; padding: 12px 26px; border-radius: 40px; font-weight: bold; text-decoration: none;">Sửa</a>
+                                    <a href="/posts/delete/${post.id}" onclick="return confirm('Xóa bài viết này?')" style="background: #EF4444; color: white; padding: 12px 26px; border-radius: 40px; font-weight: bold; text-decoration: none;">Xóa</a>
+                                </div>
+                            </article>
+                        `).join('')
+                        : `<div style="text-align: center; padding: 4rem 2rem; background: #F8FAFC; border-radius: 20px; border: 2px dashed #C7D2FE;">
+                                <p style="font-size: 1.4rem; color: #6B7280;">Chưa có bài viết nào. Hãy bắt đầu bằng cách tạo bài viết mới!</p>
+                                <a href="/posts/add" style="margin-top: 1.5rem; display: inline-block; background: #7C3AED; color: white; padding: 14px 32px; border-radius: 50px; font-weight: bold; text-decoration: none;">Viết bài đầu tiên</a>
+                           </div>`
+                    }
                 </div>
             </div>
-        </div>
+        </section>
     `
 }) %>

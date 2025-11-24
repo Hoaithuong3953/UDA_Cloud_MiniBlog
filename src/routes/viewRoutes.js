@@ -1,28 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const Post = require("../models/postModel");
-// Trang chủ
-router.get("/", (req, res) => {
-    res.render("index", { title: "Trang chủ" });
-});
-
-// Danh sách bài viết
-router.get("/posts", async (req, res) => {
+// Trang chủ hiển thị danh sách bài viết
+router.get("/", async (req, res) => {
     try {
         const posts = await Post.getAll();
-        res.render("posts", { 
-            title: "Danh sách bài viết",
-            posts
-        });
+        res.render("index", { title: "Trang chủ", posts });
     } catch (err) {
         console.error(err);
         res.status(500).send("Lỗi server");
     }
-});
-
-// Trang chủ
-router.get("/", (req, res) => {
-    res.render("index", { title: "Trang chủ" });
 });
 
 // Thêm bài viết
@@ -45,7 +32,7 @@ router.get("/posts/delete/:id", async (req, res) => {
   try {
     const deleted = await Post.delete(req.params.id);
     if (!deleted) return res.status(404).send("Bài viết không tồn tại");
-    res.redirect("/posts");
+    res.redirect("/");
   } catch (err) {
     console.error(err);
     res.status(500).send("Lỗi server");
@@ -54,7 +41,7 @@ router.get("/posts/delete/:id", async (req, res) => {
 
 // Tìm kiếm
 router.get("/posts/search", async (req, res) => {
-    const q = req.query.q || "";
+    const q = (req.query.q || "").trim();
     let results = [];
     if (q) {
         results = await Post.search(q); 
@@ -62,6 +49,7 @@ router.get("/posts/search", async (req, res) => {
     res.render("search", {
         title: "Tìm kiếm bài viết",
         query: q,
+        posts: results,
         results
     });
 });

@@ -4,22 +4,26 @@ const Post = require("../models/postModel");
 // CREATE - Thêm bài viết mới
 exports.createPost = async (req, res) => {
     try {
-        const { title, content, author, authorName } = req.body;  // ← THÊM "author"
+        const { title, content, author, authorName, author_name } = req.body;  // ← THÊM "author"
 
-        // DÙ FORM GỬI author HOẶC authorName ĐỀU ĐƯỢC
-        const finalAuthor = author || authorName || "Khuyết danh";
+        // DÙ FORM GỬI author, authorName HOẶC author_name ĐỀU ĐƯỢC
+        const finalAuthor =
+            author_name ||
+            authorName ||
+            author ||
+            "Khuyết danh";
 
         if (!title || !content) {
             return error(res, "INVALID_REQUEST", "Vui lòng nhập tiêu đề và nội dung", 400);
         }
 
-        await Post.create({ 
-            title: title.trim(), 
-            content: content.trim(), 
-            author: finalAuthor
+        await Post.create({
+            title: title.trim(),
+            content: content.trim(),
+            author_name: finalAuthor.trim()
         });
 
-        return res.redirect("/posts");
+        return res.redirect("/");
     } catch (err) {
         console.error("Lỗi tạo bài viết:", err);
         return res.status(500).send("Lỗi server");
@@ -53,18 +57,21 @@ exports.updatePost = async (req, res) => {
             return res.status(404).send("Bài viết không tồn tại");
         }
 
-        res.redirect("/posts");  // Quay lại danh sách sau khi cập nhật
+        res.redirect("/");  // Quay lại trang chủ sau khi cập nhật
     } catch (err) {
         console.error(err);
         res.status(500).send("Lỗi server");
     }
 };
 
-// GET ALL - Hiển thị danh sách bài viết
+// GET ALL - Trang chủ hiển thị danh sách bài viết
 exports.getPosts = async (req, res) => {
     try {
         const posts = await Post.getAll();
-        res.render("posts", { posts });  // Truyền danh sách bài viết
+        res.render("index", {
+            title: "Trang chủ",
+            posts
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send("Lỗi server");
@@ -108,7 +115,7 @@ exports.deletePost = async (req, res) => {
             return error(res, "NOT_FOUND", "Bài viết không tồn tại", 404);
         }
 
-        return res.redirect("/posts");  // Quay lại danh sách sau khi xóa
+        return res.redirect("/");  // Quay lại trang chủ sau khi xóa
     } catch (err) {
         console.error(err);
         return res.status(500).send("Lỗi server");
